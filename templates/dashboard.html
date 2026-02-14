@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>Dashboard Sunu Transformation</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; padding: 20px; text-align: center; }
+        .card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: inline-block; width: 80%; }
+        h1 { color: #2c3e50; }
+        .stat { font-size: 2em; color: #27ae60; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Tableau de Bord Commercial</h1>
+    <div class="card">
+        <p>Chiffre d'Affaires Total</p>
+        <div id="ca" class="stat">Chargement...</div>
+        <canvas id="myChart" width="400" height="200"></canvas>
+    </div>
+
+    <script>
+        // On récupère les données de ton API Python
+        fetch('/statistiques/chiffre-affaires')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('ca').innerText = data.chiffre_affaires_total + " FCFA";
+                
+                // On crée le graphique
+                const ctx = document.getElementById('myChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Ventes'],
+                        datasets: [{
+                            label: 'Chiffre d\'Affaires (FCFA)',
+                            data: [data.chiffre_affaires_total],
+                            backgroundColor: '#27ae60'
+                        }]
+                    }
+                });
+            });
+    </script>
+</body>
+</html>
